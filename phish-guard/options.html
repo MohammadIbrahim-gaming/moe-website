@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phishing Guard - Settings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #f3f4f6;
+      padding: 40px 20px;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #374151;
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      background: #f9fafb;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .setting-label {
+      flex: 1;
+    }
+
+    .setting-label strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #1f2937;
+    }
+
+    .setting-label span {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: 0.3s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #10b981;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 15px;
+    }
+
+    .info-box p {
+      color: #1e40af;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🛡️ Phishing Guard Settings</h1>
+      <p>Student-made manual block list</p>
+    </div>
+
+    <div class="content">
+      <div class="section">
+        <h2 class="section-title">Protection Settings</h2>
+        
+        <div class="setting-item">
+          <div class="setting-label">
+            <strong>Enable Protection</strong>
+            <span>Block only the domains you add</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="enableProtection" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="info-box">
+          <p>
+            <strong>How it works:</strong> This simplified student project only blocks domains you
+            manually add below. There is no automatic detection.
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Blocked Sites</h2>
+
+        <div class="setting-item">
+          <div class="setting-label">
+            <strong>Blocked domains</strong>
+            <span>Any matching domain or subdomain will be blocked</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <input type="text" id="blockedInput" placeholder="example.com" style="flex: 1; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+            <button class="btn btn-primary" id="addBlocked">Add</button>
+          </div>
+          <div id="blockedItems" style="max-height: 200px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px; background: #f9fafb;"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Statistics</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="blockedCount">0</div>
+            <div class="stat-label">Links Blocked</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary" id="resetStats">Reset Statistics</button>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">About</h2>
+        <div class="info-box">
+          <p>
+            <strong>Phishing Guard</strong><br><br>
+            Built as a student project. It only blocks domains you manually add.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

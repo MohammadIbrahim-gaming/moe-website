@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icon Generator for Phishing Guard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    canvas {
+      border: 1px solid #ddd;
+      margin: 10px 0;
+      display: block;
+    }
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 5px;
+    }
+    button:hover {
+      background: #5568d3;
+    }
+    .instructions {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 4px;
+      margin-top: 20px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛡️ Phishing Guard Icon Generator</h1>
+    <p>Click the buttons below to generate and download the extension icons.</p>
+    
+    <div>
+      <h3>16x16 Icon</h3>
+      <canvas id="icon16" width="16" height="16"></canvas>
+      <button onclick="generateIcon(16, 'icon16.png')">Generate & Download 16x16</button>
+    </div>
+    
+    <div>
+      <h3>48x48 Icon</h3>
+      <canvas id="icon48" width="48" height="48"></canvas>
+      <button onclick="generateIcon(48, 'icon48.png')">Generate & Download 48x48</button>
+    </div>
+    
+    <div>
+      <h3>128x128 Icon</h3>
+      <canvas id="icon128" width="128" height="128"></canvas>
+      <button onclick="generateIcon(128, 'icon128.png')">Generate & Download 128x128</button>
+    </div>
+    
+    <div class="instructions">
+      <strong>Instructions:</strong><br>
+      1. Click each button to generate and download the icons<br>
+      2. Save all three files to the <code>icons/</code> folder<br>
+      3. Rename them to <code>icon16.png</code>, <code>icon48.png</code>, and <code>icon128.png</code>
+    </div>
+  </div>
+
+  <script>
+    function drawShield(ctx, size) {
+      const centerX = size / 2;
+      const centerY = size / 2;
+      const radius = size * 0.4;
+      
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#667eea');
+      gradient.addColorStop(1, '#764ba2');
+      
+      // Draw shield shape
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.moveTo(centerX, size * 0.1);
+      ctx.quadraticCurveTo(size * 0.2, size * 0.1, size * 0.2, size * 0.3);
+      ctx.lineTo(size * 0.2, size * 0.6);
+      ctx.quadraticCurveTo(size * 0.2, size * 0.75, centerX, size * 0.85);
+      ctx.quadraticCurveTo(size * 0.8, size * 0.75, size * 0.8, size * 0.6);
+      ctx.lineTo(size * 0.8, size * 0.3);
+      ctx.quadraticCurveTo(size * 0.8, size * 0.1, centerX, size * 0.1);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Draw checkmark
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = size * 0.08;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(centerX - radius * 0.3, centerY);
+      ctx.lineTo(centerX - radius * 0.1, centerY + radius * 0.3);
+      ctx.lineTo(centerX + radius * 0.3, centerY - radius * 0.2);
+      ctx.stroke();
+    }
+    
+    function generateIcon(size, filename) {
+      const canvas = document.getElementById(`icon${size}`);
+      const ctx = canvas.getContext('2d');
+      
+      // Clear canvas
+      ctx.clearRect(0, 0, size, size);
+      
+      // Draw shield
+      drawShield(ctx, size);
+      
+      // Download
+      canvas.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
+    
+    // Generate previews on load
+    window.onload = function() {
+      drawShield(document.getElementById('icon16').getContext('2d'), 16);
+      drawShield(document.getElementById('icon48').getContext('2d'), 48);
+      drawShield(document.getElementById('icon128').getContext('2d'), 128);
+    };
+  </script>
+</body>
+</html>

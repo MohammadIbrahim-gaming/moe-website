@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phishing Guard - Test Page</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f3f4f6;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #1f2937;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+    .test-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 8px;
+    }
+    .test-section h2 {
+      color: #374151;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    .test-link {
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 5px;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+    .test-link:hover {
+      background: #5568d3;
+    }
+    .warning {
+      background: #fef2f2;
+      border-left: 4px solid #ef4444;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 4px;
+      color: #991b1b;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🛡️ Phishing Guard Test Page</h1>
+    <p>Click on the links below to test the extension. Suspicious links should be blocked with a warning.</p>
+
+    <div class="test-section">
+      <h2>Typosquatting Tests</h2>
+      <a href="https://appl.com" class="test-link">appl.com (should be blocked - similar to apple.com)</a><br>
+      <a href="https://gooogle.com" class="test-link">gooogle.com (should be blocked - similar to google.com)</a><br>
+      <a href="https://micrsoft.com" class="test-link">micrsoft.com (should be blocked - similar to microsoft.com)</a><br>
+      <div class="warning">
+        ⚠️ These domains use typosquatting to mimic legitimate websites.
+      </div>
+    </div>
+
+    <div class="test-section">
+      <h2>Safe Links (Should Work)</h2>
+      <a href="https://apple.com" class="test-link">apple.com (safe)</a><br>
+      <a href="https://google.com" class="test-link">google.com (safe)</a><br>
+      <a href="https://github.com" class="test-link">github.com (safe)</a><br>
+    </div>
+
+    <div class="test-section">
+      <h2>Suspicious Pattern Tests</h2>
+      <a href="http://192.168.1.1" class="test-link">IP Address Link (should be blocked)</a><br>
+      <div class="warning">
+        ⚠️ Links using IP addresses instead of domain names are often suspicious.
+      </div>
+    </div>
+  </div>
+</body>
+</html>
