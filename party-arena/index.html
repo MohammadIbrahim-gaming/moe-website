@@ -55,50 +55,19 @@
         </div>
     </div>
 
+    <script type="module" src="game.js"></script>
     <script>
-        const isFileProtocol = window.location.protocol === 'file:';
-
-        if (isFileProtocol) {
-            document.body.innerHTML = `
-                <div style="padding: 50px; text-align: center; font-family: Arial; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; color: white;">
-                    <div style="background: rgba(0,0,0,0.3); padding: 40px; border-radius: 20px; max-width: 600px;">
-                        <h1 style="font-size: 3rem; margin-bottom: 20px;">Server Required</h1>
-                        <p style="font-size: 1.2rem; margin-bottom: 30px;">This game uses ES6 modules and must be run from a web server.</p>
-                        <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left;">
-                            <h3 style="margin-bottom: 15px;">For Local Testing:</h3>
-                            <p style="margin-bottom: 15px; opacity: 0.9;">This message only appears when opening files directly. If you are viewing this on a hosted website, the game works automatically.</p>
-                            <ol style="line-height: 2; font-size: 1.1rem;">
-                                <li>Open Terminal/Command Prompt</li>
-                                <li>Navigate to the project folder:
-                                    <code style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 5px; display: block; margin-top: 5px;">cd /Users/mi/Desktop/mtibrahi_1581</code>
-                                </li>
-                                <li>Start a web server:
-                                    <code style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 5px; display: block; margin-top: 5px;">python3 -m http.server 8000</code>
-                                </li>
-                                <li>Open in browser:
-                                    <code style="background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 5px; display: block; margin-top: 5px;">http://localhost:8000/party-arena/</code>
-                                </li>
-                            </ol>
-                        </div>
-                        <p style="font-size: 0.9rem; opacity: 0.8;">Tip: When hosted online (GitHub Pages, Netlify, etc.), visitors can play immediately without any setup.</p>
-                    </div>
+        if (window.location.protocol === 'file:') {
+            const warning = document.createElement('div');
+            warning.style.cssText = 'position: fixed; inset: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; display: flex; align-items: center; justify-content: center; padding: 40px; text-align: center; font-family: Arial; z-index: 9999;';
+            warning.innerHTML = `
+                <div style="background: rgba(0,0,0,0.35); padding: 32px; border-radius: 20px; max-width: 600px;">
+                    <h1 style="font-size: 2.5rem; margin-bottom: 16px;">Server Required</h1>
+                    <p style="font-size: 1.1rem; margin-bottom: 16px;">This game uses ES modules and must be run from a web server.</p>
+                    <p style="font-size: 0.95rem; opacity: 0.85;">Tip: run <code style="background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px;">python3 -m http.server 8000</code> in the folder and open <code style="background: rgba(255,255,255,0.2); padding: 2px 6px; border-radius: 4px;">http://localhost:8000</code>.</p>
                 </div>
             `;
-        }
-
-        if (!isFileProtocol) {
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.src = 'game.js';
-            script.onerror = () => {
-                document.body.innerHTML = `
-                    <div style="padding: 50px; text-align: center; font-family: Arial;">
-                        <h1>Game failed to load</h1>
-                        <p>Please refresh the page or try a different browser.</p>
-                    </div>
-                `;
-            };
-            document.body.appendChild(script);
+            document.body.appendChild(warning);
         }
 
         if (window.HTMLScriptElement && HTMLScriptElement.supports && !HTMLScriptElement.supports('module')) {
