@@ -209,7 +209,7 @@
   <div class="container">
     <div class="header">
       <h1>🛡️ Phishing Guard Settings</h1>
-      <p>Student-made manual block list</p>
+      <p>Student-made, developer-managed block list</p>
     </div>
 
     <div class="content">
@@ -219,7 +219,7 @@
         <div class="setting-item">
           <div class="setting-label">
             <strong>Enable Protection</strong>
-            <span>Block only the domains you add</span>
+            <span>Block only the domains published in updates</span>
           </div>
           <label class="toggle-switch">
             <input type="checkbox" id="enableProtection" checked>
@@ -229,8 +229,8 @@
 
         <div class="info-box">
           <p>
-            <strong>How it works:</strong> This simplified student project only blocks domains you
-            manually add below. There is no automatic detection.
+            <strong>How it works:</strong> This simplified student project blocks domains curated by the developer.
+            Updates are delivered through extension releases. There is no automatic detection.
           </p>
         </div>
       </div>
@@ -241,15 +241,11 @@
         <div class="setting-item">
           <div class="setting-label">
             <strong>Blocked domains</strong>
-            <span>Any matching domain or subdomain will be blocked</span>
+            <span>Managed by the developer and synced via updates</span>
           </div>
         </div>
 
         <div style="margin-bottom: 20px;">
-          <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-            <input type="text" id="blockedInput" placeholder="example.com" style="flex: 1; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
-            <button class="btn btn-primary" id="addBlocked">Add</button>
-          </div>
           <div id="blockedItems" style="max-height: 200px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px; background: #f9fafb;"></div>
         </div>
       </div>

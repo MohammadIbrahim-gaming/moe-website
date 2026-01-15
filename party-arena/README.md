@@ -1,63 +1,59 @@
 # Party Arena - Local Multiplayer Game
 
-A fast-paced 2D local multiplayer party game with 20 unique mini-games!
+Party Arena is a student-built, fast-paced 2D local multiplayer game with 20 mini-games and 15-round matches.
 
 ## How to Run
+This game uses ES6 modules, so it must be served from a local web server.
 
-This game uses ES6 modules, so it **must be run from a web server** (not by opening the HTML file directly).
-
-### Option 1: Python (Recommended)
+### Option 1: Python (recommended)
 ```bash
 cd party-arena
 python3 -m http.server 8000
 ```
-Then open: http://localhost:8000
+Open: `http://localhost:8000`
 
 ### Option 2: Node.js
 ```bash
 cd party-arena
 npx http-server -p 8000
 ```
-Then open: http://localhost:8000
+Open: `http://localhost:8000`
 
 ### Option 3: VS Code Live Server
-If you have the Live Server extension, right-click `index.html` and select "Open with Live Server"
+Right-click `index.html` and choose "Open with Live Server".
 
 ## How to Play
-
 1. Enter player names (or use defaults)
-2. Click "Start Game (15 Rounds)"
-3. Play 15 rounds of random mini-games
-4. Player with most points wins!
+2. Start a 15-round match
+3. Compete across random mini-games
+4. The player with the highest score wins
 
 ## Controls
-
-- **Player 1**: WASD
-- **Player 2**: Arrow Keys
-- **Player 3**: IJKL
-- **Player 4**: TFGH
+- Player 1: WASD
+- Player 2: Arrow Keys
+- Player 3: IJKL
+- Player 4: TFGH
 
 ## Game Modes
+1. Color Capture
+2. King of the Hill
+3. Last Standing
+4. Collect Coins
+5. Avoid Bombs
+6. Race to Finish
+7. Tag
+8. Territory Control
+9. Survival
+10. Collect Items
+11. Push Out
+12. Capture Flag
+13. Sumo
+14. Snakes
+15. Dodge Walls
+16. Platformer
+17. Maze Race
+18. Target Practice
+19. Button Mash
+20. Memory Match
 
-1. Color Capture - Capture colored zones
-2. King of the Hill - Stay on the hill
-3. Last Standing - Survive the shrinking circle
-4. Collect Coins - Gather coins
-5. Avoid Bombs - Dodge explosions
-6. Race to Finish - Race to the finish line
-7. Tag - Avoid being "it"
-8. Territory Control - Control grid territory
-9. Survival - Survive enemy waves
-10. Collect Items - Collect different items
-11. Push Out - Push others off the platform
-12. Capture Flag - Capture flags
-13. Sumo - Push opponents out of the ring
-14. Snakes - Avoid your trail
-15. Dodge Walls - Avoid moving walls
-16. Platformer - Jump between platforms
-17. Maze Race - Race through a maze
-18. Target Practice - Hit targets with projectiles
-19. Button Mash - Mash buttons quickly
-20. Memory Match - Remember and follow sequences
-
-Enjoy!
+Built as a student project for fun and practice. Feedback is welcome.

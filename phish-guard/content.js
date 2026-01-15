@@ -66,7 +66,7 @@ function showBlockedOverlay(domain) {
       Site blocked
     </h2>
     <p style="margin: 0 0 20px; color: #475569; font-size: 14px;">
-      This domain is on your manual block list: <strong>${domain}</strong>
+      This domain is on the developer-managed block list: <strong>${domain}</strong>
     </p>
     <button id="phish-guard-leave" style="
       padding: 10px 18px;
@@ -137,10 +137,24 @@ function checkCurrentPage() {
   }
 }
 
+async function loadBlockedSites() {
+  try {
+    const response = await fetch(chrome.runtime.getURL('blockedSites.json'));
+    if (!response.ok) {
+      blockedSites = [];
+      return;
+    }
+    const data = await response.json();
+    blockedSites = Array.isArray(data) ? data : [];
+  } catch (error) {
+    blockedSites = [];
+  }
+}
+
 function loadSettings() {
-  chrome.storage.local.get(['enabled', 'blockedSites'], (result) => {
+  chrome.storage.local.get(['enabled'], async (result) => {
     isEnabled = result.enabled !== false;
-    blockedSites = result.blockedSites || [];
+    await loadBlockedSites();
     checkCurrentPage();
   });
 }
@@ -148,9 +162,6 @@ function loadSettings() {
 chrome.storage.onChanged.addListener((changes) => {
   if (changes.enabled) {
     isEnabled = changes.enabled.newValue;
-  }
-  if (changes.blockedSites) {
-    blockedSites = changes.blockedSites.newValue || [];
   }
 });
 

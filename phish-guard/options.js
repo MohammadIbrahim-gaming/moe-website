@@ -7,14 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const blockedCountEl = document.getElementById('blockedCount');
   const resetStatsBtn = document.getElementById('resetStats');
 
-  const blockedInput = document.getElementById('blockedInput');
-  const addBlockedBtn = document.getElementById('addBlocked');
   const blockedItems = document.getElementById('blockedItems');
 
-  chrome.storage.local.get(['enabled', 'blockedCount', 'blockedSites'], (result) => {
+  chrome.storage.local.get(['enabled', 'blockedCount'], (result) => {
     enableProtection.checked = result.enabled !== false;
     blockedCountEl.textContent = result.blockedCount || 0;
-    loadBlockedSites(result.blockedSites || []);
+    loadBlockedSites();
   });
 
   enableProtection.addEventListener('change', (event) => {
@@ -29,70 +27,35 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
-  addBlockedBtn.addEventListener('click', () => {
-    const domain = blockedInput.value.trim().toLowerCase();
-    if (!domain) {
-      alert('Please enter a domain');
-      return;
-    }
-
-    if (!/^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*\.[a-z]{2,}$/i.test(domain)) {
-      alert('Please enter a valid domain (e.g., example.com)');
-      return;
-    }
-
-    chrome.runtime.sendMessage(
-      { action: 'addBlockedSite', domain },
-      (response) => {
-        if (response && response.success) {
-          blockedInput.value = '';
-          loadBlockedSites(response.blockedSites);
-        } else {
-          alert(response?.message || 'Failed to add domain');
-        }
-      }
-    );
-  });
-
-  blockedInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-      addBlockedBtn.click();
-    }
-  });
-
-  function loadBlockedSites(list) {
+  async function loadBlockedSites() {
     blockedItems.innerHTML = '';
-    if (list.length === 0) {
-      blockedItems.innerHTML = '<div style="color: #6b7280; font-size: 14px; padding: 10px; text-align: center;">No blocked domains</div>';
+    try {
+      const response = await fetch(chrome.runtime.getURL('blockedSites.json'));
+      if (!response.ok) {
+        blockedItems.innerHTML = '<div style="color: #6b7280; font-size: 14px; padding: 10px; text-align: center;">No blocked domains</div>';
+        return;
+      }
+      const list = await response.json();
+      if (!Array.isArray(list) || list.length === 0) {
+        blockedItems.innerHTML = '<div style="color: #6b7280; font-size: 14px; padding: 10px; text-align: center;">No blocked domains</div>';
+        return;
+      }
+
+      list.forEach((domain) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 5px; background: white; border-radius: 6px; border: 1px solid #e5e7eb;';
+
+        const domainText = document.createElement('span');
+        domainText.textContent = domain;
+        domainText.style.cssText = 'font-size: 14px; color: #374151;';
+
+        item.appendChild(domainText);
+        blockedItems.appendChild(item);
+      });
+    } catch (error) {
+      blockedItems.innerHTML = '<div style="color: #6b7280; font-size: 14px; padding: 10px; text-align: center;">Unable to load blocked domains</div>';
       return;
     }
-
-    list.forEach((domain) => {
-      const item = document.createElement('div');
-      item.style.cssText = 'display: flex; justify-content: space-between; align-items: center; padding: 10px; margin-bottom: 5px; background: white; border-radius: 6px; border: 1px solid #e5e7eb;';
-
-      const domainText = document.createElement('span');
-      domainText.textContent = domain;
-      domainText.style.cssText = 'font-size: 14px; color: #374151;';
-
-      const removeBtn = document.createElement('button');
-      removeBtn.textContent = 'Remove';
-      removeBtn.style.cssText = 'padding: 5px 12px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;';
-      removeBtn.addEventListener('click', () => {
-        chrome.runtime.sendMessage(
-          { action: 'removeBlockedSite', domain },
-          (response) => {
-            if (response && response.success) {
-              loadBlockedSites(response.blockedSites);
-            }
-          }
-        );
-      });
-
-      item.appendChild(domainText);
-      item.appendChild(removeBtn);
-      blockedItems.appendChild(item);
-    });
   }
 
   resetStatsBtn.addEventListener('click', () => {

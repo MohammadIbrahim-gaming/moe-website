@@ -21,38 +21,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true;
   }
 
-  if (request.action === 'getBlockedSites') {
-    chrome.storage.local.get(['blockedSites'], (result) => {
-      sendResponse({ blockedSites: result.blockedSites || [] });
-    });
-    return true;
-  }
-
-  if (request.action === 'addBlockedSite') {
-    chrome.storage.local.get(['blockedSites'], (result) => {
-      const blockedSites = result.blockedSites || [];
-      if (!blockedSites.includes(request.domain)) {
-        blockedSites.push(request.domain);
-        chrome.storage.local.set({ blockedSites }, () => {
-          sendResponse({ success: true, blockedSites });
-        });
-      } else {
-        sendResponse({ success: false, message: 'Domain already blocked' });
-      }
-    });
-    return true;
-  }
-
-  if (request.action === 'removeBlockedSite') {
-    chrome.storage.local.get(['blockedSites'], (result) => {
-      const blockedSites = (result.blockedSites || []).filter(d => d !== request.domain);
-      chrome.storage.local.set({ blockedSites }, () => {
-        sendResponse({ success: true, blockedSites });
-      });
-    });
-    return true;
-  }
-
   if (request.action === 'recordBlocked') {
     chrome.storage.local.get(['blockedCount'], (result) => {
       const count = (result.blockedCount || 0) + 1;
@@ -65,15 +33,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.get(['enabled', 'blockedCount', 'blockedSites'], (result) => {
+  chrome.storage.local.get(['enabled', 'blockedCount'], (result) => {
     if (result.enabled === undefined) {
       chrome.storage.local.set({ enabled: true });
     }
     if (result.blockedCount === undefined) {
       chrome.storage.local.set({ blockedCount: 0 });
-    }
-    if (result.blockedSites === undefined) {
-      chrome.storage.local.set({ blockedSites: [] });
     }
   });
 });

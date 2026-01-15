@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Phishing Guard",
   "version": "1.0.0",
-  "description": "Student-made manual site blocker (add domains yourself)",
+  "description": "Student-made site blocker with developer-managed list",
   "permissions": [
     "storage"
   ],
@@ -34,5 +34,10 @@
     "128": "icons/icon128.png"
   },
   "options_page": "options.html",
-  "web_accessible_resources": []
+  "web_accessible_resources": [
+    {
+      "resources": ["blockedSites.json"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
