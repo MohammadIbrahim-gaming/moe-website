@@ -87,15 +87,18 @@
         }
 
         if (!isFileProtocol) {
-            import('./game.js').catch((error) => {
-                console.error('Error loading Party Arena:', error);
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.src = 'game.js';
+            script.onerror = () => {
                 document.body.innerHTML = `
                     <div style="padding: 50px; text-align: center; font-family: Arial;">
                         <h1>Game failed to load</h1>
                         <p>Please refresh the page or try a different browser.</p>
                     </div>
                 `;
-            });
+            };
+            document.body.appendChild(script);
         }
 
         if (window.HTMLScriptElement && HTMLScriptElement.supports && !HTMLScriptElement.supports('module')) {
