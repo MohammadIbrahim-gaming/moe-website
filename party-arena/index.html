@@ -73,6 +73,23 @@
         if (window.HTMLScriptElement && HTMLScriptElement.supports && !HTMLScriptElement.supports('module')) {
             document.body.innerHTML = '<div style="padding: 50px; text-align: center; font-family: Arial;"><h1>Browser Not Supported</h1><p>This game requires a modern browser with ES6 module support.</p><p>Please use Chrome, Firefox, Safari, or Edge (latest versions).</p></div>';
         }
+
+        window.addEventListener('error', (event) => {
+            console.error('Party Arena error:', event.error || event.message);
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Party Arena promise rejection:', event.reason);
+        });
+
+        setTimeout(() => {
+            if (!window.PARTY_ARENA_LOADED) {
+                const warning = document.createElement('div');
+                warning.style.cssText = 'position: fixed; bottom: 16px; right: 16px; background: rgba(0,0,0,0.85); color: white; padding: 12px 16px; border-radius: 8px; font-family: Arial; z-index: 9999; max-width: 280px;';
+                warning.textContent = 'Game failed to initialize. Please refresh the page.';
+                document.body.appendChild(warning);
+            }
+        }, 2000);
     </script>
 </body>
 </html>

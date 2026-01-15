@@ -1,3 +1,5 @@
+window.PARTY_ARENA_LOADED = true;
+
 import { GameManager } from './core/GameManager.js';
 import { InputManager } from './core/InputManager.js';
 import { Player } from './core/Player.js';
