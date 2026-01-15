@@ -24,9 +24,8 @@ import { TargetPractice } from './games/TargetPractice.js';
 import { ButtonMash } from './games/ButtonMash.js';
 import { MemoryMatch } from './games/MemoryMatch.js';
 
-// Wait for DOM to be ready
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, initializing game...');
+function initializeGame() {
+    console.log('Initializing game...');
     
     // Declare variables in outer scope so functions can access them
     let canvas, ctx;
@@ -223,4 +222,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeGame);
+} else {
+    initializeGame();
+}
