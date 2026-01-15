@@ -1,4 +1,4 @@
-window.PARTY_ARENA_LOADED = true;
+window.PARTY_ARENA_LOADED = false;
 
 import { GameManager } from './core/GameManager.js';
 import { InputManager } from './core/InputManager.js';
@@ -25,6 +25,26 @@ import { MazeRace } from './games/MazeRace.js';
 import { TargetPractice } from './games/TargetPractice.js';
 import { ButtonMash } from './games/ButtonMash.js';
 import { MemoryMatch } from './games/MemoryMatch.js';
+
+function showInitError(message) {
+    const existing = document.getElementById('party-arena-init-error');
+    if (existing) {
+        existing.remove();
+    }
+
+    const overlay = document.createElement('div');
+    overlay.id = 'party-arena-init-error';
+    overlay.style.cssText = 'position: fixed; inset: 0; background: rgba(15, 23, 42, 0.9); color: white; display: flex; align-items: center; justify-content: center; font-family: Arial; z-index: 9999; text-align: center; padding: 24px;';
+    overlay.innerHTML = `
+        <div style="max-width: 520px;">
+            <h2 style="margin-bottom: 12px;">Game failed to load</h2>
+            <p style="margin-bottom: 16px;">${message}</p>
+            <button style="padding: 10px 16px; border: none; border-radius: 6px; background: #22c55e; color: white; font-weight: 600; cursor: pointer;">Reload</button>
+        </div>
+    `;
+    overlay.querySelector('button').addEventListener('click', () => window.location.reload());
+    document.body.appendChild(overlay);
+}
 
 function initializeGame() {
     console.log('Initializing game...');
@@ -77,10 +97,12 @@ function initializeGame() {
             });
         }
         
+        window.PARTY_ARENA_LOADED = true;
         console.log('Game initialized successfully');
     } catch (error) {
         console.error('Error initializing game:', error);
-        alert('Error loading game: ' + error.message + '\n\nMake sure you are running this from a web server (not file://).\nTry: python3 -m http.server 8000');
+        showInitError(`Error loading game: ${error.message}`);
+        return;
     }
 
     // All available games
