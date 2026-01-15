@@ -56,16 +56,17 @@
     </div>
 
     <script>
-        // Check if running from file:// protocol BEFORE loading modules
-        if (window.location.protocol === 'file:') {
+        const isFileProtocol = window.location.protocol === 'file:';
+
+        if (isFileProtocol) {
             document.body.innerHTML = `
                 <div style="padding: 50px; text-align: center; font-family: Arial; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; color: white;">
                     <div style="background: rgba(0,0,0,0.3); padding: 40px; border-radius: 20px; max-width: 600px;">
-                        <h1 style="font-size: 3rem; margin-bottom: 20px;">⚠️ Server Required</h1>
+                        <h1 style="font-size: 3rem; margin-bottom: 20px;">Server Required</h1>
                         <p style="font-size: 1.2rem; margin-bottom: 30px;">This game uses ES6 modules and must be run from a web server.</p>
                         <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left;">
-                            <h3 style="margin-bottom: 15px;">📋 For Local Testing:</h3>
-                            <p style="margin-bottom: 15px; opacity: 0.9;">This message only appears when opening files directly. If you're viewing this on a hosted website, the game works automatically!</p>
+                            <h3 style="margin-bottom: 15px;">For Local Testing:</h3>
+                            <p style="margin-bottom: 15px; opacity: 0.9;">This message only appears when opening files directly. If you are viewing this on a hosted website, the game works automatically.</p>
                             <ol style="line-height: 2; font-size: 1.1rem;">
                                 <li>Open Terminal/Command Prompt</li>
                                 <li>Navigate to the project folder:
@@ -79,21 +80,26 @@
                                 </li>
                             </ol>
                         </div>
-                        <p style="font-size: 0.9rem; opacity: 0.8;">💡 Tip: When hosted online (GitHub Pages, Netlify, etc.), visitors can play immediately without any setup!</p>
+                        <p style="font-size: 0.9rem; opacity: 0.8;">Tip: When hosted online (GitHub Pages, Netlify, etc.), visitors can play immediately without any setup.</p>
                     </div>
                 </div>
             `;
-        } else {
-            // Only load the game if we're on a server
-            const script = document.createElement('script');
-            script.type = 'module';
-            script.src = 'game.js';
-            document.body.appendChild(script);
         }
-        
-        // Check if modules are supported
+
+        if (!isFileProtocol) {
+            import('./game.js').catch((error) => {
+                console.error('Error loading Party Arena:', error);
+                document.body.innerHTML = `
+                    <div style="padding: 50px; text-align: center; font-family: Arial;">
+                        <h1>Game failed to load</h1>
+                        <p>Please refresh the page or try a different browser.</p>
+                    </div>
+                `;
+            });
+        }
+
         if (window.HTMLScriptElement && HTMLScriptElement.supports && !HTMLScriptElement.supports('module')) {
-            document.body.innerHTML = '<div style="padding: 50px; text-align: center; font-family: Arial;"><h1>⚠️ Browser Not Supported</h1><p>This game requires a modern browser with ES6 module support.</p><p>Please use Chrome, Firefox, Safari, or Edge (latest versions).</p></div>';
+            document.body.innerHTML = '<div style="padding: 50px; text-align: center; font-family: Arial;"><h1>Browser Not Supported</h1><p>This game requires a modern browser with ES6 module support.</p><p>Please use Chrome, Firefox, Safari, or Edge (latest versions).</p></div>';
         }
     </script>
 </body>
