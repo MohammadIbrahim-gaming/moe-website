@@ -1,0 +1,9 @@
+# Network Security Scanner Requirements
+# Python 3.7+ required
+
+# Core dependencies (all built-in, no external packages needed)
+# This scanner uses only Python standard library for maximum compatibility
+
+# Optional: For enhanced functionality, you can install:
+# netaddr>=0.8.0  # For advanced network manipulation
+# scapy>=2.4.5    # For advanced packet crafting (requires root/admin)

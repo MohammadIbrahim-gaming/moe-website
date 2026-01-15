@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohammad Ibrahim - Projects</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">Mohammad Ibrahim</h1>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="projects.html" class="nav-link active">Projects</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="projects-section">
+            <div class="container">
+                <h2 class="section-title glitch" data-text="My Projects">My Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="file-type">[.js]</span>
+                            <h3>Phish Guard <span style="background: #f59e0b; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px;">BETA</span></h3>
+                        </div>
+                        <p><span class="prompt-arrow">></span> An advanced Chrome extension that prevents users from clicking on malicious websites using ML-based detection, threat intelligence, and sophisticated algorithms.</p>
+                        <p style="margin-top: 10px; font-size: 13px; color: #f59e0b; font-weight: 500;"><span class="prompt-arrow">⚠</span> Currently in beta - actively being developed. Found an issue? <a href="https://www.linkedin.com/in/mohammad-ibrahim-5a04483a1" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">Contact me</a></p>
+                        <a href="https://github.com/MohammadIbrahim-gaming/phish-guard" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub</a>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="file-type">[.py]</span>
+                            <h3>Local Network Security Scanner <span style="background: #f59e0b; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px;">BETA</span></h3>
+                        </div>
+                        <p><span class="prompt-arrow">></span> A Python-based network security tool that scans local networks, detects open ports, identifies services, and performs security assessments. Features multi-threaded scanning, vulnerability detection, and detailed JSON reporting.</p>
+                        <p style="margin-top: 10px; font-size: 13px; color: #f59e0b; font-weight: 500;"><span class="prompt-arrow">⚠</span> Currently in beta - actively being developed. Found an issue? <a href="https://www.linkedin.com/in/mohammad-ibrahim-5a04483a1" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">Contact me</a></p>
+                        <a href="https://github.com/MohammadIbrahim-gaming/moe-website/tree/main/network-security-scanner" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub</a>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-header">
+                            <span class="file-type">[.js]</span>
+                            <h3>Party Arena <span style="background: #f59e0b; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-left: 8px;">BETA</span></h3>
+                        </div>
+                        <p><span class="prompt-arrow">></span> A fast-paced 2D local multiplayer party game featuring 20 unique mini-games in top-down view. Play 15 rounds with up to 2 players, competing in various challenges from King of the Hill to Snakes, with the highest score winning!</p>
+                        <p style="margin-top: 10px; font-size: 13px; color: #f59e0b; font-weight: 500;"><span class="prompt-arrow">⚠</span> Currently in beta - actively being developed. Found an issue? <a href="https://www.linkedin.com/in/mohammad-ibrahim-5a04483a1" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline;">Contact me</a></p>
+                        <a href="party-arena/index.html" class="project-link" onclick="return checkServer(event, this)">Play Game</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>@ 2026 Mohammad Ibrahim</p>
+        </div>
+    </footer>
+
+    <script>
+        function checkServer(event, link) {
+            // Check if we're viewing via file:// protocol (only needed for local file viewing)
+            if (window.location.protocol === 'file:') {
+                event.preventDefault();
+                alert('⚠️ Local File Detected\n\nThis game uses ES6 modules and must be run from a web server when viewing locally.\n\nFor local testing:\n1. Open Terminal/Command Prompt\n2. Navigate to this project folder\n3. Run: python3 -m http.server 8000\n4. Open: http://localhost:8000/party-arena/\n\nNote: When hosted online (GitHub Pages, Netlify, etc.), visitors can play without any setup!');
+                return false;
+            }
+            // If hosted online (http:// or https://), it works automatically
+            return true;
+        }
+    </script>
+</body>
+</html>
