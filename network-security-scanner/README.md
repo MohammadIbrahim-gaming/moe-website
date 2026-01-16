@@ -1,10 +1,10 @@
 # Network Security Scanner (Python)
 
 ## Overview
-This is a student‑built scanner for learning local network basics. It finds online devices and shows open ports in a simple, readable format.
+A friendly, student‑built scanner for learning local network basics. It finds online devices and shows open ports in a simple, readable format.
 
 ## How to Run
-1. Install Python 3
+1. Make sure you have Python 3 installed
 2. Run the scanner:
 ```bash
 python3 network_scanner.py
@@ -16,11 +16,11 @@ python3 network_scanner.py
 - Open ports for each host
 
 ## Ethical Use
-Use this only on:
+Please use this only on:
 - Networks you own, or
 - Systems with written permission
 
-Unauthorized scanning is illegal and unethical. You are responsible for how you use this tool.
+Unauthorized scanning is illegal and unethical. You’re responsible for how you use this tool.
 
 ## About
 Built as a student project by Mohammad Ibrahim (Cybersecurity focus) at the University of New Orleans.
