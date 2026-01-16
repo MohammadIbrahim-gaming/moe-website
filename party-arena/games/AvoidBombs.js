@@ -5,6 +5,7 @@ export class AvoidBombs extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Avoid Bombs';
         this.duration = 30000;
+        this.instructionsText = 'Dodge explosions and stay alive to score points.';
         this.bombs = [];
         this.spawnTimer = 0;
         this.spawnInterval = 900;

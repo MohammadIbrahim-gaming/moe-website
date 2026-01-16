@@ -5,6 +5,7 @@ export class TargetPractice extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Target Practice';
         this.duration = 30000;
+        this.instructionsText = 'Move to fire and hit targets to score points.';
         this.targets = [];
         this.maxTargets = 8;
         this.projectiles = [];

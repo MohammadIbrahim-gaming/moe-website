@@ -148,11 +148,12 @@ function initializeGame() {
             inputManager = new InputManager();
 
             // Initialize game manager
+            const showInstructions = document.getElementById('show-instructions')?.checked ?? true;
             gameManager = new GameManager(canvas, ctx, players, allGames, {
                 onRoundComplete: showRoundTransition,
                 onGameComplete: showGameOver,
                 onUpdateUI: updateUI
-            }, inputManager);
+            }, inputManager, { showInstructionsEnabled: showInstructions });
 
             // Start game loop
             gameManager.start();

@@ -122,6 +122,14 @@ body {
     margin-bottom: 0.25rem;
 }
 
+.instructions-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+}
+
 
 .player-input input::placeholder {
     color: rgba(255, 255, 255, 0.6);

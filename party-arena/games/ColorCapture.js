@@ -5,6 +5,7 @@ export class ColorCapture extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Color Capture';
         this.duration = 25000;
+        this.instructionsText = 'Stand in colored zones to claim them. Hold more zones than your opponent to score.';
         this.zones = [];
     }
 

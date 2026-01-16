@@ -5,6 +5,7 @@ export class ButtonMash extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Button Mash';
         this.duration = 20000;
+        this.instructionsText = 'Mash your assigned key as fast as you can.';
         this.buttonPresses = [0, 0];
         this.lastKeyState = {};
         this.targetKeys = [];

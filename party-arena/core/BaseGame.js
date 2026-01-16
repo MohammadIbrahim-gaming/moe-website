@@ -10,6 +10,8 @@ export class BaseGame {
         this.isComplete = false;
         this.scores = [0, 0]; // 2 players
         this.scoreRemainder = [0, 0];
+        this.instructionsText = '';
+        this.showInstructionsEnabled = false;
     }
 
     start() {
@@ -91,5 +93,29 @@ export class BaseGame {
         const wholePoints = Math.floor(total);
         this.scoreRemainder[index] = total - wholePoints;
         this.scores[index] += wholePoints;
+    }
+
+    showInstructionsOverlay() {
+        if (!this.showInstructionsEnabled || !this.instructionsText) {
+            return;
+        }
+        if (document.getElementById('party-arena-instructions')) {
+            return;
+        }
+
+        const overlay = document.createElement('div');
+        overlay.id = 'party-arena-instructions';
+        overlay.style.cssText = 'position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); color: white; display: flex; align-items: center; justify-content: center; font-family: Arial; z-index: 9999; text-align: center; padding: 24px;';
+        overlay.innerHTML = `
+            <div style="max-width: 520px; background: rgba(0,0,0,0.35); padding: 24px; border-radius: 16px;">
+                <h2 style="margin-bottom: 12px;">${this.name}</h2>
+                <p style="margin-bottom: 16px;">${this.instructionsText}</p>
+                <button style="padding: 10px 16px; border: none; border-radius: 6px; background: #22c55e; color: white; font-weight: 600; cursor: pointer;">Start</button>
+            </div>
+        `;
+        overlay.querySelector('button').addEventListener('click', () => {
+            overlay.remove();
+        });
+        document.body.appendChild(overlay);
     }
 }

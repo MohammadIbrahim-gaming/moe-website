@@ -5,6 +5,7 @@ export class DodgeWalls extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Dodge Walls';
         this.duration = 30000;
+        this.instructionsText = 'Walls close in from the edges. Find the gap and survive.';
         this.walls = [];
         this.wallTimer = 0;
         this.wallInterval = 2200;

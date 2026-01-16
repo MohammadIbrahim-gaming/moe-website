@@ -5,6 +5,7 @@ export class CaptureFlag extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Capture Flag';
         this.duration = 30000;
+        this.instructionsText = "Capture the opponent’s flag and return it to your base. Player 1 shoots with 'E' and Player 2 shoots with Right Shift.";
         this.flags = [];
         this.playerHasFlag = [-1, -1];
         this.flagBases = [];
@@ -28,8 +29,6 @@ export class CaptureFlag extends BaseGame {
         this.projectiles = [];
         this.lastShotTime = [0, 0];
 
-        this.showInstructions();
-
         // Reset players
         this.players.forEach((player, i) => {
             player.reset(
@@ -39,34 +38,13 @@ export class CaptureFlag extends BaseGame {
         });
     }
 
-    showInstructions() {
-        if (document.getElementById('capture-flag-instructions')) {
-            return;
-        }
-
-        const overlay = document.createElement('div');
-        overlay.id = 'capture-flag-instructions';
-        overlay.style.cssText = 'position: fixed; inset: 0; background: rgba(15, 23, 42, 0.85); color: white; display: flex; align-items: center; justify-content: center; font-family: Arial; z-index: 9999; text-align: center; padding: 24px;';
-        overlay.innerHTML = `
-            <div style="max-width: 520px; background: rgba(0,0,0,0.35); padding: 24px; border-radius: 16px;">
-                <h2 style="margin-bottom: 12px;">Hey!! sorry you gotta read</h2>
-                <p style="margin-bottom: 16px;">For this game mode, Player 1 has a shooting ability with the 'E' key and Player 2 has it with the Left Shift.</p>
-                <button style="padding: 10px 16px; border: none; border-radius: 6px; background: #22c55e; color: white; font-weight: 600; cursor: pointer;">Got it</button>
-            </div>
-        `;
-        overlay.querySelector('button').addEventListener('click', () => {
-            overlay.remove();
-        });
-        document.body.appendChild(overlay);
-    }
-
     gameUpdate(deltaTime) {
         const inputState = this.inputManager.getState();
 
         // Shoot projectiles
         this.players.forEach((player, index) => {
             if (!player.alive) return;
-            const shootKey = index === 0 ? 'KeyE' : 'ShiftLeft';
+            const shootKey = index === 0 ? 'KeyE' : 'ShiftRight';
             const now = Date.now();
             if (inputState[shootKey] && now - this.lastShotTime[index] > this.shotCooldown) {
                 this.lastShotTime[index] = now;
@@ -122,7 +100,7 @@ export class CaptureFlag extends BaseGame {
                 if (!player.alive) return;
                 const dist = Math.hypot(player.x - flag.x, player.y - flag.y);
                 if (dist < player.radius + 20) {
-                    if (playerIndex !== flagIndex) {
+            if (playerIndex !== flagIndex) {
                         flag.captured = true;
                         flag.owner = playerIndex;
                         this.playerHasFlag[playerIndex] = flagIndex;

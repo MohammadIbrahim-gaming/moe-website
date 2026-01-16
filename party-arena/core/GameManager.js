@@ -1,13 +1,14 @@
 import { InputManager } from './InputManager.js';
 
 export class GameManager {
-    constructor(canvas, ctx, players, gameClasses, callbacks, inputManager) {
+    constructor(canvas, ctx, players, gameClasses, callbacks, inputManager, options = {}) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.players = players;
         this.gameClasses = gameClasses;
         this.callbacks = callbacks;
         this.inputManager = inputManager || new InputManager();
+        this.showInstructionsEnabled = options.showInstructionsEnabled || false;
 
         this.currentRound = 0;
         this.totalRounds = 15;
@@ -37,6 +38,8 @@ export class GameManager {
         const gameIndex = (this.currentRound - 1) % this.roundGameOrder.length;
         const GameClass = this.roundGameOrder[gameIndex];
         this.gameInstance = new GameClass(this.canvas, this.ctx, this.players, this.inputManager);
+        this.gameInstance.showInstructionsEnabled = this.showInstructionsEnabled;
+        this.gameInstance.showInstructionsOverlay();
 
         // Reset players
         this.players.forEach(player => {

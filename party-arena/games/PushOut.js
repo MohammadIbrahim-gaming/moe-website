@@ -5,7 +5,10 @@ export class PushOut extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Push Out';
         this.duration = 30000;
+        this.instructionsText = 'Push the other player off the shrinking platform to win.';
         this.platform = { x: 0, y: 0, width: 0, height: 0 };
+        this.platformShrinkRate = 0.2;
+        this.minPlatformPadding = 220;
     }
 
     init() {
@@ -27,6 +30,20 @@ export class PushOut extends BaseGame {
     }
 
     gameUpdate(deltaTime) {
+        // Shrink platform over time
+        const shrinkAmount = this.platformShrinkRate;
+        const maxPadding = this.minPlatformPadding;
+        const minWidth = this.canvas.width - maxPadding * 2;
+        const minHeight = this.canvas.height - maxPadding * 2;
+        if (this.platform.width > minWidth) {
+            this.platform.x += shrinkAmount;
+            this.platform.width -= shrinkAmount * 2;
+        }
+        if (this.platform.height > minHeight) {
+            this.platform.y += shrinkAmount;
+            this.platform.height -= shrinkAmount * 2;
+        }
+
         // Check if players are pushed off platform
         this.players.forEach((player, index) => {
             if (!player.alive) return;
@@ -46,7 +63,7 @@ export class PushOut extends BaseGame {
                     if (dist < player.radius + otherPlayer.radius) {
                         // Push effect
                         const angle = Math.atan2(player.y - otherPlayer.y, player.x - otherPlayer.x);
-                        const pushForce = 2;
+                        const pushForce = 3.5;
                         player.x += Math.cos(angle) * pushForce;
                         player.y += Math.sin(angle) * pushForce;
                     }

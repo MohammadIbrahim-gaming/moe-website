@@ -5,6 +5,7 @@ export class Tag extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Tag';
         this.duration = 30000;
+        this.instructionsText = 'Avoid being IT. Tag the other player to pass it.';
         this.it = 0; // Player who is "it"
         this.tagCooldown = [0, 0];
         this.cooldownTime = 1500;

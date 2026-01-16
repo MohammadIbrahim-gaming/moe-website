@@ -5,6 +5,7 @@ export class CollectItems extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Collect Items';
         this.duration = 30000;
+        this.instructionsText = 'Collect items for points. Stars are worth the most.';
         this.items = [];
         this.maxItems = 10;
         this.itemTypes = ['coin', 'gem', 'star'];

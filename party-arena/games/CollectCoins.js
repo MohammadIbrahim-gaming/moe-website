@@ -5,6 +5,7 @@ export class CollectCoins extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Collect Coins';
         this.duration = 30000;
+        this.instructionsText = 'Collect as many coins as you can. Each coin adds to your score.';
         this.coins = [];
         this.maxCoins = 15;
     }

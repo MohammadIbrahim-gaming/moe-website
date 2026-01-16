@@ -5,6 +5,7 @@ export class Survival extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Survival';
         this.duration = 30000;
+        this.instructionsText = 'Survive as long as you can while enemies move toward you.';
         this.enemies = [];
         this.spawnTimer = 0;
         this.spawnInterval = 2000;

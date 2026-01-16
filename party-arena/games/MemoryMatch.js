@@ -5,6 +5,7 @@ export class MemoryMatch extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Memory Match';
         this.duration = 30000;
+        this.instructionsText = 'Watch the sequence twice, then step on the points in order.';
         this.sequences = [[], []];
         this.currentSequence = [];
         this.sequenceLength = 3;

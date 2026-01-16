@@ -5,6 +5,7 @@ export class TerritoryControl extends BaseGame {
         super(canvas, ctx, players, inputManager);
         this.name = 'Territory Control';
         this.duration = 30000;
+        this.instructionsText = 'Move around to claim tiles. The more territory you control, the higher your score.';
         this.grid = [];
         this.gridSize = 20;
         this.cellSize = 0;
