@@ -10,8 +10,8 @@ export class Player {
         this.radius = 30;
         this.baseSpeed = 3;
         this.boostMultiplier = 1;
-        this.boostMax = 2;
-        this.boostDecayPerMs = 0.001;
+        this.boostMax = 3;
+        this.boostDecayPerMs = 0.0008;
         this.wasBoostPressed = false;
         this.score = 0;
         this.alive = true;

@@ -74,7 +74,7 @@ export class RaceToFinish extends BaseGame {
 
             // Check distance to finish
             const distToFinish = Math.hypot(player.x - this.finishLine.x, player.y - this.finishLine.y);
-            if (distToFinish < 30 && this.playerCheckpoint[index] >= this.checkpoints.length) {
+            if (distToFinish < 30) {
                 this.scores[index] = 200;
                 player.alive = false;
             }

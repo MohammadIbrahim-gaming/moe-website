@@ -35,13 +35,14 @@ export class PushOut extends BaseGame {
         const maxPadding = this.minPlatformPadding;
         const minWidth = this.canvas.width - maxPadding * 2;
         const minHeight = this.canvas.height - maxPadding * 2;
+        const shrinkMultiplier = this.isSuddenDeath ? 2 : 1;
         if (this.platform.width > minWidth) {
-            this.platform.x += shrinkAmount;
-            this.platform.width -= shrinkAmount * 2;
+            this.platform.x += shrinkAmount * shrinkMultiplier;
+            this.platform.width -= shrinkAmount * 2 * shrinkMultiplier;
         }
         if (this.platform.height > minHeight) {
-            this.platform.y += shrinkAmount;
-            this.platform.height -= shrinkAmount * 2;
+            this.platform.y += shrinkAmount * shrinkMultiplier;
+            this.platform.height -= shrinkAmount * 2 * shrinkMultiplier;
         }
 
         // Check if players are pushed off platform
@@ -63,7 +64,7 @@ export class PushOut extends BaseGame {
                     if (dist < player.radius + otherPlayer.radius) {
                         // Push effect
                         const angle = Math.atan2(player.y - otherPlayer.y, player.x - otherPlayer.x);
-                        const pushForce = 3.5;
+                        const pushForce = this.isSuddenDeath ? 4.5 : 3.5;
                         player.x += Math.cos(angle) * pushForce;
                         player.y += Math.sin(angle) * pushForce;
                     }

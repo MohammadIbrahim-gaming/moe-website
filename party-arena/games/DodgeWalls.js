@@ -29,7 +29,8 @@ export class DodgeWalls extends BaseGame {
 
     gameUpdate(deltaTime) {
         this.wallTimer += deltaTime;
-        if (this.wallTimer >= this.wallInterval) {
+        const interval = this.isSuddenDeath ? Math.max(1200, this.wallInterval * 0.6) : this.wallInterval;
+        if (this.wallTimer >= interval) {
             this.wallTimer = 0;
 
             if (this.walls.length < this.maxActiveWalls) {
@@ -40,7 +41,10 @@ export class DodgeWalls extends BaseGame {
                 if (axis === 'v' && hasVertical && !hasHorizontal) axis = 'h';
 
                 const gapHalf = this.gapSize / 2;
-                const speed = Math.random() < 0.5 ? 3 : -3;
+                const baseSpeed = 3;
+                const speed = this.isSuddenDeath
+                    ? (Math.random() < 0.5 ? baseSpeed * 1.4 : -baseSpeed * 1.4)
+                    : (Math.random() < 0.5 ? baseSpeed : -baseSpeed);
 
                 if (axis === 'h') {
                     const fromTop = Math.random() < 0.5;

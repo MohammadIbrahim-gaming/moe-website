@@ -56,9 +56,10 @@ export class LastStanding extends BaseGame {
         });
 
         // Update projectiles
+        const speedBoost = this.isSuddenDeath ? 1.4 : 1;
         this.projectiles.forEach(projectile => {
-            projectile.x += Math.cos(projectile.angle) * projectile.speed;
-            projectile.y += Math.sin(projectile.angle) * projectile.speed;
+            projectile.x += Math.cos(projectile.angle) * projectile.speed * speedBoost;
+            projectile.y += Math.sin(projectile.angle) * projectile.speed * speedBoost;
         });
 
         // Remove off-screen projectiles

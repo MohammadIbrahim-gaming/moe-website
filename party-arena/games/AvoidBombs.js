@@ -8,7 +8,7 @@ export class AvoidBombs extends BaseGame {
         this.instructionsText = 'Dodge explosions and stay alive to score points.';
         this.bombs = [];
         this.spawnTimer = 0;
-        this.spawnInterval = 900;
+        this.spawnInterval = 450;
     }
 
     init() {
@@ -26,7 +26,8 @@ export class AvoidBombs extends BaseGame {
 
     gameUpdate(deltaTime) {
         this.spawnTimer += deltaTime;
-        if (this.spawnTimer >= this.spawnInterval) {
+        const spawnInterval = this.isSuddenDeath ? Math.max(250, this.spawnInterval * 0.6) : this.spawnInterval;
+        if (this.spawnTimer >= spawnInterval) {
             this.spawnTimer = 0;
             this.bombs.push({
                 x: Math.random() * this.canvas.width,
@@ -44,7 +45,7 @@ export class AvoidBombs extends BaseGame {
                 bomb.explosionTimer -= deltaTime;
                 if (bomb.explosionTimer <= 0) {
                     bomb.exploded = true;
-                    bomb.explosionRadius = 80;
+                    bomb.explosionRadius = this.isSuddenDeath ? 100 : 80;
                 }
             } else {
                 bomb.explosionDuration -= deltaTime;

@@ -11,7 +11,8 @@ export class BaseGame {
         this.scores = [0, 0]; // 2 players
         this.scoreRemainder = [0, 0];
         this.instructionsText = '';
-        this.showInstructionsEnabled = false;
+        this.suddenDeathThresholdMs = 5000;
+        this.isSuddenDeath = false;
     }
 
     start() {
@@ -34,6 +35,8 @@ export class BaseGame {
             this.isComplete = true;
             return;
         }
+
+        this.isSuddenDeath = this.timeRemaining <= this.suddenDeathThresholdMs / 1000;
 
         // Convert deltaTime from milliseconds to seconds if needed (it's already in ms from RAF)
         const deltaMs = deltaTime || 16.67; // Default to ~60fps if deltaTime not provided
@@ -95,8 +98,8 @@ export class BaseGame {
         this.scores[index] += wholePoints;
     }
 
-    showInstructionsOverlay() {
-        if (!this.showInstructionsEnabled || !this.instructionsText) {
+    showInstructionsOverlay(onClose) {
+        if (!this.instructionsText) {
             return;
         }
         if (document.getElementById('party-arena-instructions')) {
@@ -115,6 +118,9 @@ export class BaseGame {
         `;
         overlay.querySelector('button').addEventListener('click', () => {
             overlay.remove();
+            if (typeof onClose === 'function') {
+                onClose();
+            }
         });
         document.body.appendChild(overlay);
     }

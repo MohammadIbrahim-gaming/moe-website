@@ -38,16 +38,21 @@ export class GameManager {
         const gameIndex = (this.currentRound - 1) % this.roundGameOrder.length;
         const GameClass = this.roundGameOrder[gameIndex];
         this.gameInstance = new GameClass(this.canvas, this.ctx, this.players, this.inputManager);
-        this.gameInstance.showInstructionsEnabled = this.showInstructionsEnabled;
-        this.gameInstance.showInstructionsOverlay();
 
         // Reset players
         this.players.forEach(player => {
             player.alive = true;
         });
 
-        // Start the game
-        this.gameInstance.start();
+        if (this.showInstructionsEnabled && this.gameInstance.instructionsText) {
+            this.gameInstance.isComplete = true;
+            this.gameInstance.showInstructionsOverlay(() => {
+                this.gameInstance.isComplete = false;
+                this.gameInstance.start();
+            });
+        } else {
+            this.gameInstance.start();
+        }
     }
 
     gameLoop(timestamp) {

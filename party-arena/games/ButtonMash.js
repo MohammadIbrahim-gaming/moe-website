@@ -16,14 +16,8 @@ export class ButtonMash extends BaseGame {
         this.buttonPresses = [0, 0];
         this.lastKeyState = {};
         
-        // Assign random keys to mash
-        const allKeys = ['KeyW', 'KeyS', 'KeyA', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 
-                        'KeyI', 'KeyK', 'KeyJ', 'KeyL', 'KeyT', 'KeyG', 'KeyF', 'KeyH'];
-        this.targetKeys = [];
-        this.players.forEach((player, index) => {
-            const randomKey = allKeys[Math.floor(Math.random() * allKeys.length)];
-            this.targetKeys[index] = randomKey;
-        });
+        // Fixed keys per player
+        this.targetKeys = ['KeyW', 'ArrowUp'];
 
         // Reset players (they don't move in this game)
         this.players.forEach((player, i) => {

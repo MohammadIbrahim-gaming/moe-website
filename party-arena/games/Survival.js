@@ -26,7 +26,8 @@ export class Survival extends BaseGame {
 
     gameUpdate(deltaTime) {
         this.spawnTimer += deltaTime;
-        if (this.spawnTimer >= this.spawnInterval) {
+        const interval = this.isSuddenDeath ? Math.max(800, this.spawnInterval * 0.6) : this.spawnInterval;
+        if (this.spawnTimer >= interval) {
             this.spawnTimer = 0;
             const side = Math.floor(Math.random() * 4);
             let x, y;
@@ -38,7 +39,7 @@ export class Survival extends BaseGame {
             this.enemies.push({
                 x, y,
                 radius: 12,
-                speed: 1 + Math.random(),
+                speed: (1 + Math.random()) * (this.isSuddenDeath ? 1.4 : 1),
                 angle: Math.atan2(this.canvas.height / 2 - y, this.canvas.width / 2 - x)
             });
         }
