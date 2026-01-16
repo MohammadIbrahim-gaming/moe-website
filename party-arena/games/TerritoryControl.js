@@ -40,15 +40,19 @@ export class TerritoryControl extends BaseGame {
             }
         });
 
-        // Calculate scores
+        // Calculate scores as a percentage of the grid
         this.scores = [0, 0];
+        const totalCells = this.gridSize * this.gridSize;
+        const claimedCounts = [0, 0];
         for (let y = 0; y < this.gridSize; y++) {
             for (let x = 0; x < this.gridSize; x++) {
                 if (this.grid[y][x] >= 0) {
-                    this.scores[this.grid[y][x]] += 1;
+                    claimedCounts[this.grid[y][x]] += 1;
                 }
             }
         }
+        this.scores[0] = Math.round((claimedCounts[0] / totalCells) * 100);
+        this.scores[1] = Math.round((claimedCounts[1] / totalCells) * 100);
     }
 
     gameDraw() {

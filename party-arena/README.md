@@ -1,6 +1,6 @@
 # Party Arena - Local Multiplayer Game
 
-Party Arena is a student-built, fast-paced 2D local multiplayer game with 20 mini-games and 15-round matches.
+Party Arena is a student-built, fast-paced 2D local multiplayer game with 15 mini-games and 15-round matches.
 
 ## How to Run
 This game uses ES6 modules, so it must be served from a local web server.
@@ -36,24 +36,19 @@ Right-click `index.html` and choose "Open with Live Server".
 
 ## Game Modes
 1. Color Capture
-2. King of the Hill
-3. Last Standing
-4. Collect Coins
-5. Avoid Bombs
-6. Race to Finish
-7. Tag
-8. Territory Control
-9. Survival
-10. Collect Items
-11. Push Out
-12. Capture Flag
-13. Sumo
-14. Snakes
-15. Dodge Walls
-16. Platformer
-17. Maze Race
-18. Target Practice
-19. Button Mash
-20. Memory Match
+2. Last Standing
+3. Collect Coins
+4. Avoid Bombs
+5. Race to Finish
+6. Tag
+7. Territory Control
+8. Survival
+9. Collect Items
+10. Push Out
+11. Capture Flag
+12. Dodge Walls
+13. Target Practice
+14. Button Mash
+15. Memory Match
 
 Built as a student project for fun and practice. Feedback is welcome.

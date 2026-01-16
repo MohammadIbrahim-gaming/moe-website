@@ -9,12 +9,14 @@ export class BaseGame {
         this.startTime = 0;
         this.isComplete = false;
         this.scores = [0, 0]; // 2 players
+        this.scoreRemainder = [0, 0];
     }
 
     start() {
         this.startTime = Date.now();
         this.isComplete = false;
-        this.scores = [0, 0, 0, 0];
+        this.scores = [0, 0];
+        this.scoreRemainder = [0, 0];
         this.init();
     }
 
@@ -81,5 +83,13 @@ export class BaseGame {
 
     getScores() {
         return this.scores;
+    }
+
+    addPointsPerSecond(index, ratePerSecond, deltaTime) {
+        const increment = (ratePerSecond * deltaTime) / 1000;
+        const total = increment + this.scoreRemainder[index];
+        const wholePoints = Math.floor(total);
+        this.scoreRemainder[index] = total - wholePoints;
+        this.scores[index] += wholePoints;
     }
 }

@@ -32,7 +32,7 @@ export class TargetPractice extends BaseGame {
             x: Math.random() * (this.canvas.width - 100) + 50,
             y: Math.random() * (this.canvas.height - 100) + 50,
             radius: 25,
-            value: 20
+            value: 10
         });
     }
 

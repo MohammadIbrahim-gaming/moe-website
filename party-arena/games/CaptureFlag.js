@@ -27,7 +27,7 @@ export class CaptureFlag extends BaseGame {
         });
     }
 
-    gameUpdate() {
+    gameUpdate(deltaTime) {
         // Check flag capture
         this.flags.forEach((flag, flagIndex) => {
             if (flag.captured) return;
@@ -43,10 +43,10 @@ export class CaptureFlag extends BaseGame {
             });
         });
 
-        // Score for captured flags
+        // Score for captured flags (scaled per second)
         this.players.forEach((player, index) => {
             if (this.playerHasFlag[index] >= 0) {
-                this.scores[index] += 5;
+                this.addPointsPerSecond(index, 4, deltaTime);
             }
         });
     }

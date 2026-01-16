@@ -39,7 +39,7 @@ export class Tag extends BaseGame {
                     // Tagged!
                     this.it = index;
                     this.tagCooldown[index] = this.cooldownTime;
-                    this.scores[this.it] -= 50; // Being "it" is bad
+                    this.scores[this.it] -= 10; // Being "it" is bad
                 }
             });
         }
@@ -47,7 +47,7 @@ export class Tag extends BaseGame {
         // Score for not being "it"
         this.players.forEach((player, index) => {
             if (player.alive && index !== this.it) {
-                this.scores[index] += 1;
+                this.addPointsPerSecond(index, 2, deltaTime);
             }
         });
     }

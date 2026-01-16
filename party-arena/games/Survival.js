@@ -63,10 +63,10 @@ export class Survival extends BaseGame {
                    enemy.y > -50 && enemy.y < this.canvas.height + 50;
         });
 
-        // Score for survival
+        // Score for survival (scaled per second)
         this.players.forEach((player, index) => {
             if (player.alive) {
-                this.scores[index] += 1;
+                this.addPointsPerSecond(index, 3, deltaTime);
             }
         });
     }

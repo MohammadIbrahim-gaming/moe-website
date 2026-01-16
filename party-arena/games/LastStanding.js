@@ -6,7 +6,8 @@ export class LastStanding extends BaseGame {
         this.name = 'Last Standing';
         this.duration = 30000;
         this.shrinkingCircle = { x: 0, y: 0, radius: 0, maxRadius: 0 };
-        this.shrinkSpeed = 0.5;
+        this.minRadius = 120;
+        this.shrinkRatePerMs = 0;
     }
 
     init() {
@@ -14,33 +15,42 @@ export class LastStanding extends BaseGame {
         this.shrinkingCircle.y = this.canvas.height / 2;
         this.shrinkingCircle.maxRadius = Math.min(this.canvas.width, this.canvas.height) / 2;
         this.shrinkingCircle.radius = this.shrinkingCircle.maxRadius;
+        this.shrinkRatePerMs = (this.shrinkingCircle.maxRadius - this.minRadius) / this.duration;
 
-        // Reset players randomly
-        this.players.forEach(player => {
+        // Reset players inside the safe circle
+        this.players.forEach((player, index) => {
+            const angle = (index / this.players.length) * Math.PI * 2;
+            const radius = this.shrinkingCircle.radius * 0.6;
             player.reset(
-                Math.random() * this.canvas.width,
-                Math.random() * this.canvas.height
+                this.shrinkingCircle.x + Math.cos(angle) * radius,
+                this.shrinkingCircle.y + Math.sin(angle) * radius
             );
         });
     }
 
-    gameUpdate() {
+    gameUpdate(deltaTime = 16.67) {
         // Shrink circle
-        this.shrinkingCircle.radius -= this.shrinkSpeed;
-        if (this.shrinkingCircle.radius < 50) {
-            this.shrinkingCircle.radius = 50;
+        this.shrinkingCircle.radius -= this.shrinkRatePerMs * deltaTime;
+        if (this.shrinkingCircle.radius < this.minRadius) {
+            this.shrinkingCircle.radius = this.minRadius;
         }
 
         // Check if players are outside circle
+        let aliveCount = 0;
         this.players.forEach((player, index) => {
             if (!player.alive) return;
             const dist = Math.hypot(player.x - this.shrinkingCircle.x, player.y - this.shrinkingCircle.y);
             if (dist > this.shrinkingCircle.radius) {
                 player.alive = false;
             } else {
-                this.scores[index] += 1;
+                this.addPointsPerSecond(index, 3, deltaTime);
+                aliveCount += 1;
             }
         });
+
+        if (aliveCount <= 1) {
+            this.isComplete = true;
+        }
     }
 
     gameDraw() {

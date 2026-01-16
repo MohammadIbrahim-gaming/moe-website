@@ -26,7 +26,7 @@ export class PushOut extends BaseGame {
         });
     }
 
-    gameUpdate() {
+    gameUpdate(deltaTime) {
         // Check if players are pushed off platform
         this.players.forEach((player, index) => {
             if (!player.alive) return;
@@ -53,9 +53,9 @@ export class PushOut extends BaseGame {
                 });
             }
 
-            // Score for staying on platform
+            // Score for staying on platform (scaled per second)
             if (player.alive) {
-                this.scores[index] += 1;
+                this.addPointsPerSecond(index, 3, deltaTime);
             }
         });
     }

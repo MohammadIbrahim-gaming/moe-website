@@ -8,6 +8,9 @@ export class DodgeWalls extends BaseGame {
         this.walls = [];
         this.wallTimer = 0;
         this.wallInterval = 3000;
+        this.gapSize = 160;
+        this.wallThickness = 30;
+        this.maxActiveWalls = 4;
     }
 
     init() {
@@ -27,29 +30,75 @@ export class DodgeWalls extends BaseGame {
         this.wallTimer += deltaTime;
         if (this.wallTimer >= this.wallInterval) {
             this.wallTimer = 0;
-            // Spawn wall from random side
-            const side = Math.floor(Math.random() * 4);
-            let wall;
-            if (side === 0 || side === 1) {
-                // Horizontal wall
-                wall = {
-                    x: 0,
-                    y: Math.random() * this.canvas.height,
-                    width: this.canvas.width,
-                    height: 30,
-                    speed: side === 0 ? 2 : -2
-                };
-            } else {
-                // Vertical wall
-                wall = {
-                    x: Math.random() * this.canvas.width,
-                    y: 0,
-                    width: 30,
-                    height: this.canvas.height,
-                    speed: side === 2 ? 2 : -2
-                };
+
+            if (this.walls.length < this.maxActiveWalls) {
+                const hasHorizontal = this.walls.some(wall => wall.axis === 'h');
+                const hasVertical = this.walls.some(wall => wall.axis === 'v');
+                let axis = Math.random() < 0.5 ? 'h' : 'v';
+                if (axis === 'h' && hasHorizontal && !hasVertical) axis = 'v';
+                if (axis === 'v' && hasVertical && !hasHorizontal) axis = 'h';
+
+                const gapHalf = this.gapSize / 2;
+                const speed = Math.random() < 0.5 ? 3 : -3;
+
+                if (axis === 'h') {
+                    const y = Math.random() * (this.canvas.height - this.wallThickness);
+                    const gapCenter = Math.random() * (this.canvas.width - this.gapSize) + gapHalf;
+                    const leftWidth = Math.max(0, gapCenter - gapHalf);
+                    const rightX = gapCenter + gapHalf;
+                    const rightWidth = Math.max(0, this.canvas.width - rightX);
+
+                    if (leftWidth > 0) {
+                        this.walls.push({
+                            x: 0,
+                            y,
+                            width: leftWidth,
+                            height: this.wallThickness,
+                            speed,
+                            axis: 'h'
+                        });
+                    }
+
+                    if (rightWidth > 0) {
+                        this.walls.push({
+                            x: rightX,
+                            y,
+                            width: rightWidth,
+                            height: this.wallThickness,
+                            speed,
+                            axis: 'h'
+                        });
+                    }
+                } else {
+                    const x = Math.random() * (this.canvas.width - this.wallThickness);
+                    const gapCenter = Math.random() * (this.canvas.height - this.gapSize) + gapHalf;
+                    const topHeight = Math.max(0, gapCenter - gapHalf);
+                    const bottomY = gapCenter + gapHalf;
+                    const bottomHeight = Math.max(0, this.canvas.height - bottomY);
+
+                    if (topHeight > 0) {
+                        this.walls.push({
+                            x,
+                            y: 0,
+                            width: this.wallThickness,
+                            height: topHeight,
+                            speed,
+                            axis: 'v'
+                        });
+                    }
+
+                    if (bottomHeight > 0) {
+                        this.walls.push({
+                            x,
+                            y: bottomY,
+                            width: this.wallThickness,
+                            height: bottomHeight,
+                            speed,
+                            axis: 'v'
+                        });
+                    }
+                }
             }
-            this.walls.push(wall);
         }
 
         // Update walls
@@ -81,10 +130,10 @@ export class DodgeWalls extends BaseGame {
             });
         });
 
-        // Score for survival
+        // Score for survival (scaled per second)
         this.players.forEach((player, index) => {
             if (player.alive) {
-                this.scores[index] += 1;
+                this.addPointsPerSecond(index, 3, deltaTime);
             }
         });
     }

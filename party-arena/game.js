@@ -4,9 +4,8 @@ import { GameManager } from './core/GameManager.js';
 import { InputManager } from './core/InputManager.js';
 import { Player } from './core/Player.js';
 
-// Import all 20 mini-games
+// Import available mini-games
 import { ColorCapture } from './games/ColorCapture.js';
-import { KingOfTheHill } from './games/KingOfTheHill.js';
 import { LastStanding } from './games/LastStanding.js';
 import { CollectCoins } from './games/CollectCoins.js';
 import { AvoidBombs } from './games/AvoidBombs.js';
@@ -17,11 +16,7 @@ import { Survival } from './games/Survival.js';
 import { CollectItems } from './games/CollectItems.js';
 import { PushOut } from './games/PushOut.js';
 import { CaptureFlag } from './games/CaptureFlag.js';
-import { Sumo } from './games/Sumo.js';
-import { Snakes } from './games/Snakes.js';
 import { DodgeWalls } from './games/DodgeWalls.js';
-import { Platformer } from './games/Platformer.js';
-import { MazeRace } from './games/MazeRace.js';
 import { TargetPractice } from './games/TargetPractice.js';
 import { ButtonMash } from './games/ButtonMash.js';
 import { MemoryMatch } from './games/MemoryMatch.js';
@@ -108,7 +103,6 @@ function initializeGame() {
     // All available games
     const allGames = [
         ColorCapture,
-        KingOfTheHill,
         LastStanding,
         CollectCoins,
         AvoidBombs,
@@ -119,11 +113,7 @@ function initializeGame() {
         CollectItems,
         PushOut,
         CaptureFlag,
-        Sumo,
-        Snakes,
         DodgeWalls,
-        Platformer,
-        MazeRace,
         TargetPractice,
         ButtonMash,
         MemoryMatch

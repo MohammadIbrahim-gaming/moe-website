@@ -5,7 +5,7 @@ A professional portfolio site built as a student project to showcase cybersecuri
 ## Highlights
 - Home page with terminal-style bio
 - Projects page featuring Phish Guard, Network Security Scanner, and Party Arena
-- Party Arena: 2-player local multiplayer game with 20 mini-games
+- Party Arena: 2-player local multiplayer game with 15 mini-games
 
 ## Tech Stack
 - HTML5

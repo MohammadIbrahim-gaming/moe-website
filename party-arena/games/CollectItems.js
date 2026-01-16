@@ -27,9 +27,9 @@ export class CollectItems extends BaseGame {
 
     spawnItem() {
         const type = this.itemTypes[Math.floor(Math.random() * this.itemTypes.length)];
-        let value = 10;
-        if (type === 'gem') value = 25;
-        if (type === 'star') value = 50;
+        let value = 5;
+        if (type === 'gem') value = 15;
+        if (type === 'star') value = 25;
 
         this.items.push({
             x: Math.random() * (this.canvas.width - 40) + 20,

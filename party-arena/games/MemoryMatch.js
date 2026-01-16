@@ -8,23 +8,20 @@ export class MemoryMatch extends BaseGame {
         this.sequences = [[], []];
         this.currentSequence = [];
         this.sequenceLength = 3;
-        this.playerPositions = [];
+        this.playerProgress = [];
+        this.hitCooldown = [];
+        this.sequenceRevealDuration = 2000;
+        this.sequenceRepeatCount = 2;
+        this.revealCyclesRemaining = 0;
     }
 
     init() {
         this.sequences = [[], []];
         this.currentSequence = [];
-        this.playerPositions = [];
+        this.playerProgress = [];
+        this.hitCooldown = [];
 
-        // Create sequence of positions to remember
-        for (let i = 0; i < this.sequenceLength; i++) {
-            this.currentSequence.push({
-                x: Math.random() * (this.canvas.width - 100) + 50,
-                y: Math.random() * (this.canvas.height - 100) + 50,
-                shown: false,
-                timeShown: 0
-            });
-        }
+        this.createSequence();
 
         // Reset players
         this.players.forEach((player, i) => {
@@ -32,44 +29,72 @@ export class MemoryMatch extends BaseGame {
                 this.canvas.width / 2 + (i === 0 ? -100 : 100),
                 this.canvas.height / 2
             );
-            this.playerPositions[i] = [];
+            this.playerProgress[i] = 0;
+            this.hitCooldown[i] = 0;
         });
+    }
+
+    createSequence() {
+        this.currentSequence = [];
+        for (let i = 0; i < this.sequenceLength; i++) {
+            this.currentSequence.push({
+                x: Math.random() * (this.canvas.width - 100) + 50,
+                y: Math.random() * (this.canvas.height - 100) + 50,
+                shown: false
+            });
+        }
+        this.sequenceStartTime = Date.now();
+        this.revealCyclesRemaining = this.sequenceRepeatCount;
     }
 
     gameUpdate(deltaTime) {
         // Show sequence points
-        const elapsed = Date.now() - this.startTime;
-        const showDuration = 2000;
+        const elapsed = Date.now() - this.sequenceStartTime;
+        const showDuration = this.sequenceRevealDuration;
         const pointDuration = showDuration / this.currentSequence.length;
+        const cycleDuration = showDuration;
+
+        const activeCycle = Math.floor(elapsed / cycleDuration);
+        const cycleTime = elapsed % cycleDuration;
+        const showPoints = activeCycle < this.sequenceRepeatCount;
 
         this.currentSequence.forEach((point, index) => {
             const pointStart = index * pointDuration;
             const pointEnd = pointStart + pointDuration;
-            const timeInSequence = elapsed % showDuration;
 
-            if (timeInSequence >= pointStart && timeInSequence < pointEnd) {
+            if (showPoints && cycleTime >= pointStart && cycleTime < pointEnd) {
                 point.shown = true;
             } else {
                 point.shown = false;
             }
         });
 
-        // Check if players are at sequence points
-        if (elapsed > showDuration) {
-            this.currentSequence.forEach((point, pointIndex) => {
-                this.players.forEach((player, playerIndex) => {
-                    if (!player.alive) return;
-                    const dist = Math.hypot(player.x - point.x, player.y - point.y);
-                    if (dist < 30) {
-                        if (!this.playerPositions[playerIndex].includes(pointIndex)) {
-                            this.playerPositions[playerIndex].push(pointIndex);
-                            if (this.playerPositions[playerIndex].length === this.sequenceLength) {
-                                this.scores[playerIndex] += 100;
-                                this.playerPositions[playerIndex] = [];
-                            }
-                        }
+        // Check if players are at sequence points (in order)
+        if (elapsed > showDuration * this.sequenceRepeatCount) {
+            this.players.forEach((player, playerIndex) => {
+                if (!player.alive) return;
+                this.hitCooldown[playerIndex] = Math.max(0, this.hitCooldown[playerIndex] - deltaTime);
+                if (this.hitCooldown[playerIndex] > 0) return;
+
+                const expectedIndex = this.playerProgress[playerIndex];
+                const expectedPoint = this.currentSequence[expectedIndex];
+                if (!expectedPoint) return;
+
+                const dist = Math.hypot(player.x - expectedPoint.x, player.y - expectedPoint.y);
+                if (dist < 30) {
+                    this.playerProgress[playerIndex] += 1;
+                    this.scores[playerIndex] += 25;
+                    this.hitCooldown[playerIndex] = 300;
+
+                    if (this.playerProgress[playerIndex] >= this.sequenceLength) {
+                        this.scores[playerIndex] += 100;
+                        this.playerProgress[playerIndex] = 0;
+                        this.createSequence();
+                        this.players.forEach((p, idx) => {
+                            this.hitCooldown[idx] = 0;
+                        });
                     }
-                });
+                }
             });
         }
     }

@@ -61,10 +61,10 @@ export class AvoidBombs extends BaseGame {
         // Remove old bombs
         this.bombs = this.bombs.filter(bomb => !bomb.exploded || bomb.explosionRadius < 200);
 
-        // Score for staying alive
+        // Score for staying alive (scaled per second)
         this.players.forEach((player, index) => {
             if (player.alive) {
-                this.scores[index] += 1;
+                this.addPointsPerSecond(index, 3, deltaTime);
             }
         });
     }

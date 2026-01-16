@@ -29,7 +29,7 @@ export class CollectCoins extends BaseGame {
             x: Math.random() * (this.canvas.width - 40) + 20,
             y: Math.random() * (this.canvas.height - 40) + 20,
             radius: 8,
-            value: 10
+            value: 5
         });
     }
 
