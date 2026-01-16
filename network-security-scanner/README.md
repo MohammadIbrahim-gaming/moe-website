@@ -23,7 +23,7 @@ Please use this only on:
 Unauthorized scanning is illegal and unethical. You’re responsible for how you use this tool.
 
 ## About
-Built as a student project by Mohammad Ibrahim (Cybersecurity focus) at the University of New Orleans.
+I built this as a side project.
 
 ## License
 Provided for educational use only.
