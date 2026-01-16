@@ -7,7 +7,7 @@ export class AvoidBombs extends BaseGame {
         this.duration = 30000;
         this.bombs = [];
         this.spawnTimer = 0;
-        this.spawnInterval = 1500;
+        this.spawnInterval = 900;
     }
 
     init() {
@@ -32,16 +32,21 @@ export class AvoidBombs extends BaseGame {
                 y: Math.random() * this.canvas.height,
                 radius: 20,
                 explosionTimer: 2000,
-                exploded: false
+                exploded: false,
+                explosionDuration: 3000
             });
         }
 
         // Update bombs
         this.bombs.forEach(bomb => {
-            bomb.explosionTimer -= deltaTime;
-            if (bomb.explosionTimer <= 0 && !bomb.exploded) {
-                bomb.exploded = true;
-                bomb.explosionRadius = 80;
+            if (!bomb.exploded) {
+                bomb.explosionTimer -= deltaTime;
+                if (bomb.explosionTimer <= 0) {
+                    bomb.exploded = true;
+                    bomb.explosionRadius = 80;
+                }
+            } else {
+                bomb.explosionDuration -= deltaTime;
             }
         });
 
@@ -58,8 +63,8 @@ export class AvoidBombs extends BaseGame {
             }
         });
 
-        // Remove old bombs
-        this.bombs = this.bombs.filter(bomb => !bomb.exploded || bomb.explosionRadius < 200);
+        // Remove old bombs after explosion window
+        this.bombs = this.bombs.filter(bomb => !bomb.exploded || bomb.explosionDuration > 0);
 
         // Score for staying alive (scaled per second)
         this.players.forEach((player, index) => {

@@ -7,7 +7,7 @@ export class DodgeWalls extends BaseGame {
         this.duration = 30000;
         this.walls = [];
         this.wallTimer = 0;
-        this.wallInterval = 3000;
+        this.wallInterval = 2200;
         this.gapSize = 160;
         this.wallThickness = 30;
         this.maxActiveWalls = 4;
@@ -42,7 +42,8 @@ export class DodgeWalls extends BaseGame {
                 const speed = Math.random() < 0.5 ? 3 : -3;
 
                 if (axis === 'h') {
-                    const y = Math.random() * (this.canvas.height - this.wallThickness);
+                    const fromTop = Math.random() < 0.5;
+                    const y = fromTop ? 0 : this.canvas.height - this.wallThickness;
                     const gapCenter = Math.random() * (this.canvas.width - this.gapSize) + gapHalf;
                     const leftWidth = Math.max(0, gapCenter - gapHalf);
                     const rightX = gapCenter + gapHalf;
@@ -70,7 +71,8 @@ export class DodgeWalls extends BaseGame {
                         });
                     }
                 } else {
-                    const x = Math.random() * (this.canvas.width - this.wallThickness);
+                    const fromLeft = Math.random() < 0.5;
+                    const x = fromLeft ? 0 : this.canvas.width - this.wallThickness;
                     const gapCenter = Math.random() * (this.canvas.height - this.gapSize) + gapHalf;
                     const topHeight = Math.max(0, gapCenter - gapHalf);
                     const bottomY = gapCenter + gapHalf;

@@ -7,7 +7,7 @@ export class Player {
         this.avatar = avatar || '';
         this.x = 0;
         this.y = 0;
-        this.radius = 15;
+        this.radius = 30;
         this.baseSpeed = 3;
         this.boostMultiplier = 1;
         this.boostMax = 2;

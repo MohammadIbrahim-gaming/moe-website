@@ -7,12 +7,14 @@ export class Tag extends BaseGame {
         this.duration = 30000;
         this.it = 0; // Player who is "it"
         this.tagCooldown = [0, 0];
-        this.cooldownTime = 1000;
+        this.cooldownTime = 1500;
+        this.lastTaggedIndex = -1;
     }
 
     init() {
         this.it = Math.floor(Math.random() * this.players.length);
         this.tagCooldown = [0, 0];
+        this.lastTaggedIndex = -1;
 
         // Reset players
         this.players.forEach((player, i) => {
@@ -33,12 +35,15 @@ export class Tag extends BaseGame {
         if (itPlayer.alive) {
             this.players.forEach((player, index) => {
                 if (index === this.it || !player.alive || this.tagCooldown[index] > 0) return;
+                if (index === this.lastTaggedIndex && this.tagCooldown[this.it] > 0) return;
                 
                 const dist = Math.hypot(player.x - itPlayer.x, player.y - itPlayer.y);
                 if (dist < player.radius + itPlayer.radius + 5) {
                     // Tagged!
                     this.it = index;
+                    this.lastTaggedIndex = index;
                     this.tagCooldown[index] = this.cooldownTime;
+                    this.tagCooldown[itPlayer.id] = this.cooldownTime;
                     this.scores[this.it] -= 10; // Being "it" is bad
                 }
             });
