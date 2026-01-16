@@ -16,9 +16,11 @@ export class GameManager {
         this.gameInstance = null;
         this.animationFrame = null;
         this.lastTime = 0;
+        this.roundGameOrder = [];
     }
 
     start() {
+        this.roundGameOrder = [...this.gameClasses].sort(() => Math.random() - 0.5);
         this.nextRound();
         this.gameLoop(0);
     }
@@ -31,8 +33,9 @@ export class GameManager {
             return;
         }
 
-        // Select random game
-        const GameClass = this.gameClasses[Math.floor(Math.random() * this.gameClasses.length)];
+        // Select a non-repeating game for this match
+        const gameIndex = (this.currentRound - 1) % this.roundGameOrder.length;
+        const GameClass = this.roundGameOrder[gameIndex];
         this.gameInstance = new GameClass(this.canvas, this.ctx, this.players, this.inputManager);
 
         // Reset players

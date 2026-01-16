@@ -143,10 +143,15 @@ function initializeGame() {
                 document.getElementById('player2-name').value || 'Player 2'
             ];
 
+            const playerAvatars = [
+                document.getElementById('player1-avatar')?.value || '😎',
+                document.getElementById('player2-avatar')?.value || '🦊'
+            ];
+
             // Create players (2 players only)
             players = [
-                new Player(0, playerNames[0], { up: 'KeyW', down: 'KeyS', left: 'KeyA', right: 'KeyD' }, '#FF6B6B'),
-                new Player(1, playerNames[1], { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight' }, '#4ECDC4')
+                new Player(0, playerNames[0], { up: 'KeyW', down: 'KeyS', left: 'KeyA', right: 'KeyD', boost: 'KeyQ' }, '#FF6B6B', playerAvatars[0]),
+                new Player(1, playerNames[1], { up: 'ArrowUp', down: 'ArrowDown', left: 'ArrowLeft', right: 'ArrowRight', boost: 'Slash' }, '#4ECDC4', playerAvatars[1])
             ];
 
             // Initialize input manager

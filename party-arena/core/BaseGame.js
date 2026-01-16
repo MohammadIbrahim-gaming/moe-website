@@ -39,10 +39,15 @@ export class BaseGame {
             const inputState = this.inputManager.getState();
             this.players.forEach(player => {
                 if (player.alive) {
-                    player.update(inputState);
+                    player.update(inputState, deltaMs);
                     this.constrainPlayer(player);
                 }
             });
+        }
+
+        if (this.players.every(player => !player.alive)) {
+            this.isComplete = true;
+            return;
         }
 
         this.gameUpdate(deltaTime);
