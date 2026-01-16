@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
 Local Network Security Scanner
-A comprehensive tool for scanning local networks, detecting open ports,
-identifying services, and performing basic security assessments.
+Student-friendly network scanner for learning and testing.
 """
 
 import socket
@@ -18,7 +17,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List, Dict, Tuple, Optional
 
 class NetworkSecurityScanner:
-    """Main class for network security scanning operations."""
+    """Main class for simple network scanning."""
     
     # Common ports and their services
     COMMON_PORTS = {
@@ -39,16 +38,6 @@ class NetworkSecurityScanner:
         8443: 'HTTPS-Alt'
     }
     
-    # Potentially vulnerable ports
-    VULNERABLE_PORTS = {
-        21: 'FTP - Unencrypted file transfer',
-        23: 'Telnet - Unencrypted remote access',
-        80: 'HTTP - Unencrypted web traffic',
-        143: 'IMAP - Potentially unencrypted email',
-        3306: 'MySQL - Database access',
-        5432: 'PostgreSQL - Database access'
-    }
-    
     def __init__(self, timeout: float = 1.0, max_threads: int = 50):
         """
         Initialize the scanner.
@@ -61,6 +50,7 @@ class NetworkSecurityScanner:
         self.max_threads = max_threads
         self.results = []
         self.lock = threading.Lock()
+        self.show_details = False
     
     def get_local_network(self) -> str:
         """
@@ -70,7 +60,7 @@ class NetworkSecurityScanner:
             Network subnet in CIDR notation (e.g., '192.168.1.0/24')
         """
         try:
-            # Get default gateway and network interface
+            # Try to detect a reasonable local subnet automatically.
             if platform.system() == 'Windows':
                 result = subprocess.run(['ipconfig'], capture_output=True, text=True)
                 # Parse Windows output (simplified)
@@ -141,40 +131,14 @@ class NetworkSecurityScanner:
             
             if result == 0:
                 service = self.COMMON_PORTS.get(port, 'Unknown')
-                is_vulnerable = port in self.VULNERABLE_PORTS
-                
                 return {
                     'port': port,
                     'service': service,
-                    'status': 'open',
-                    'vulnerable': is_vulnerable,
-                    'vulnerability_note': self.VULNERABLE_PORTS.get(port, '')
+                    'status': 'open'
                 }
         except Exception as e:
             pass
         return None
-    
-    def get_service_banner(self, ip: str, port: int) -> str:
-        """
-        Attempt to grab service banner.
-        
-        Args:
-            ip: Target IP address
-            port: Port number
-            
-        Returns:
-            Banner string or empty string
-        """
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(2)
-            sock.connect((ip, port))
-            sock.send(b'HEAD / HTTP/1.1\r\n\r\n')
-            banner = sock.recv(1024).decode('utf-8', errors='ignore')
-            sock.close()
-            return banner[:200].strip()  # Limit banner length
-        except:
-            return ''
     
     def scan_host(self, ip: str, ports: List[int] = None) -> Dict:
         """
@@ -212,19 +176,13 @@ class NetworkSecurityScanner:
             for future in as_completed(futures):
                 result = future.result()
                 if result:
-                    # Try to get banner
-                    banner = self.get_service_banner(ip, result['port'])
-                    result['banner'] = banner
                     open_ports.append(result)
-        
-        vulnerable_count = sum(1 for p in open_ports if p.get('vulnerable', False))
         
         return {
             'ip': ip,
             'status': 'up',
             'ports': sorted(open_ports, key=lambda x: x['port']),
             'open_ports_count': len(open_ports),
-            'vulnerable_ports_count': vulnerable_count,
             'scan_time': datetime.now().isoformat()
         }
     
@@ -265,23 +223,8 @@ class NetworkSecurityScanner:
     
     def print_host_results(self, result: Dict):
         """Print formatted results for a single host."""
-        print(f"\n{'='*60}")
-        print(f"Host: {result['ip']}")
-        print(f"Status: {result['status'].upper()}")
-        print(f"Open Ports: {result['open_ports_count']}")
-        print(f"Vulnerable Ports: {result['vulnerable_ports_count']}")
-        
-        if result['ports']:
-            print(f"\n{'Port':<8} {'Service':<15} {'Status':<10} {'Vulnerable':<12}")
-            print("-" * 60)
-            for port_info in result['ports']:
-                vuln = "⚠️  YES" if port_info.get('vulnerable') else "✓ NO"
-                print(f"{port_info['port']:<8} {port_info['service']:<15} "
-                      f"{port_info['status']:<10} {vuln:<12}")
-                
-                if port_info.get('banner'):
-                    banner_preview = port_info['banner'][:50].replace('\n', ' ')
-                    print(f"         Banner: {banner_preview}...")
+        ports = ", ".join(str(p['port']) for p in result['ports']) or "None"
+        print(f"\nHost: {result['ip']} | Open ports: {ports}")
     
     def generate_report(self, results: List[Dict], output_file: str = None):
         """
@@ -296,7 +239,6 @@ class NetworkSecurityScanner:
             'total_hosts_scanned': len(results),
             'hosts_up': len([r for r in results if r['status'] == 'up']),
             'total_open_ports': sum(r['open_ports_count'] for r in results),
-            'total_vulnerable_ports': sum(r['vulnerable_ports_count'] for r in results),
             'hosts': results
         }
         
@@ -308,18 +250,7 @@ class NetworkSecurityScanner:
         print(f"Hosts Scanned: {report['total_hosts_scanned']}")
         print(f"Hosts Up: {report['hosts_up']}")
         print(f"Total Open Ports: {report['total_open_ports']}")
-        print(f"Total Vulnerable Ports: {report['total_vulnerable_ports']}")
-        
-        # Security recommendations
-        if report['total_vulnerable_ports'] > 0:
-            print(f"\n{'='*60}")
-            print("SECURITY RECOMMENDATIONS")
-            print(f"{'='*60}")
-            print("⚠️  Vulnerable ports detected! Consider:")
-            print("   - Closing unnecessary ports")
-            print("   - Using encrypted protocols (HTTPS, SFTP, SSH)")
-            print("   - Implementing firewall rules")
-            print("   - Regular security audits")
+        print(f"Total Open Ports: {report['total_open_ports']}")
         
         # Save to file if specified
         if output_file:
@@ -333,25 +264,7 @@ class NetworkSecurityScanner:
 def main():
     """Main entry point for the scanner."""
     parser = argparse.ArgumentParser(
-        description='Local Network Security Scanner',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  # Scan local network with default ports
-  python network_scanner.py --network 192.168.1.0/24
-  
-  # Scan specific host
-  python network_scanner.py --host 192.168.1.1
-  
-  # Scan with custom ports
-  python network_scanner.py --network 192.168.1.0/24 --ports 22,80,443,8080
-  
-  # Auto-detect network and scan
-  python network_scanner.py --auto
-  
-  # Save report to file
-  python network_scanner.py --auto --output report.json
-        """
+        description='Local Network Security Scanner'
     )
     
     parser.add_argument('--network', type=str, help='Network to scan (CIDR notation)')
@@ -376,6 +289,36 @@ Examples:
             print("[!] Invalid port format. Use comma-separated numbers (e.g., 22,80,443)")
             return
     
+    # Beginner-friendly interactive mode
+    if not any([args.network, args.host, args.auto, args.ports, args.output]):
+        print("Student Mode: Quick Scan")
+        choice = input("Scan (1) local network or (2) a single host? [1/2]: ").strip() or "1"
+        ports_input = input("Custom ports? (comma-separated) or press Enter for defaults: ").strip()
+        if ports_input:
+            try:
+                ports = [int(p.strip()) for p in ports_input.split(',')]
+            except ValueError:
+                print("[!] Invalid port format. Using default ports.")
+                ports = None
+        if choice == "2":
+            host = input("Enter host IP (e.g., 192.168.1.10): ").strip()
+            if not host:
+                print("[!] No host entered. Exiting.")
+                return
+            print(f"[*] Scanning host: {host}\n")
+            result = scanner.scan_host(host, ports)
+            results = [result] if result['status'] == 'up' else []
+            scanner.print_host_results(result)
+        else:
+            network = scanner.get_local_network()
+            print(f"[*] Auto-detected network: {network}\n")
+            results = scanner.scan_network(network, ports)
+        if results:
+            scanner.generate_report(results, args.output)
+        else:
+            print("\n[!] No hosts found or all hosts are down.")
+        return
+
     # Determine target
     if args.host:
         # Scan single host
